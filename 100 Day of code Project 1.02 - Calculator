@@ -1,0 +1,72 @@
+import PySimpleGUI as sg
+import operator
+
+sg.theme('dark grey 9')
+
+ops = { '+': operator.add, '-':operator.sub, '*': operator.mul, '/': operator.truediv,}
+firstinput = True
+runonce1 = False
+runonce2 = False
+point1 = False
+point2 = False
+l = 5
+h = 3
+
+layout = [
+    [sg.Text('Enter your calculation', pad=(5,3))],
+    [sg.In(key='-in1-', size=(4,1), pad=(2,7)), sg.Text('+', key='-sign-', font=12), sg.In(key='-in2-', size=(4,1), pad=(2,7)), sg.Text('=', font=12) ,sg.Text('Ans', key='-Answer-', font=10)],
+    [sg.Button('Clear', size=(8,3), pad=(0,0), expand_x=True), sg.Button('=', size=(8,3), pad=(0,0), expand_x=True)],
+    [sg.Button('7', size=(l,h), pad=(0,0)), sg.Button('8', size=(l,h), pad=(0,0)), sg.Button('9', size=(l,h), pad=(0,0)), sg.Button('+', size=(l,h), pad=(0,0)),],
+    [sg.Button('4', size=(l, h), pad=(0,0)), sg.Button('5', size=(l,h), pad=(0,0)), sg.Button('6', size=(l,h), pad=(0,0)), sg.Button('-', size=(l,h), pad=(0,0)),],
+    [sg.Button('1', size=(l,h), pad=(0,0)), sg.Button('2', size=(l,h), pad=(0,0)), sg.Button('3', size=(l,h), pad=(0,0)), sg.Button('*', size=(l,h), pad=(0,0)),],
+    [sg.Button('Exit', size=(l,h), pad=(0,0)), sg.Button('0', size=(l,h), pad=(0,0)), sg.Button('.', size=(l,h), pad=(0,0)), sg.Button('/', size=(l,h), pad=(0,0)),],
+]
+
+window = sg.Window("Calculator", layout, size=(204,355), element_justification='center')
+
+while True:
+    event, values = window.read()
+    if firstinput == True and event in ['0','1','2','3','4','5','6','7','8','9']:
+        if runonce1 == False:
+            numstr1 = event
+            window['-in1-'].update(float(numstr1))
+        if runonce1 == True:
+            numstr1 = ''.join([numstr1,event])
+            window['-in1-'].update(float(numstr1))
+        runonce1 = True
+    if firstinput == False and event in ['0','1','2','3','4','5','6','7','8','9']:
+        if runonce2 == False:
+            numstr2 = event
+            window['-in2-'].update(float(numstr2))
+        if runonce2 == True:
+            numstr2 = ''.join([numstr2,event])
+            window['-in2-'].update(float(numstr2))
+        runonce2 = True
+    if event in ['+', '-', '*', '/']:
+        sign = event
+        firstinput = False
+        window['-sign-'].update(sign)
+
+    if event == '.':
+        if point1 == False and firstinput == True:
+            numstr1 = ''.join([numstr1, '.'])
+            point1 = True
+        if point2 == False and firstinput == False:
+            numstr2 = ''.join([numstr2,'.'])
+            point2 = True
+    if event == '=':
+        answer = (ops[sign](float(numstr1),float(numstr2)))
+        window['-Answer-'].update(answer)
+    if event == 'Clear':
+        numstr1 = ('')
+        window['-in1-'].update(str(numstr1))
+        numstr2 = ('')
+        window['-in2-'].update(str(numstr2))
+        point1 = False
+        point2 = False
+        firstinput = True
+    if event == 'Exit':
+        break
+    if event == sg.WIN_CLOSED:
+        break
+window.close()
