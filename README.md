@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @ACiDavidog
+- 👋 Hi, I’m @avidX027
 - 👀 I’m interested in Computers, Electronics, and Biochemistry.
 - 🌱 I’m currently learning Python, and C++
 - 💞️ I’m looking to collaborate on any interesting projects that help me learn.
